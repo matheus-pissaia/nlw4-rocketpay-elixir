@@ -21,8 +21,12 @@ defmodule Rocketpay.Account do
   end
 
   # 'Changeset' basicamente possui como função principal mapear dados e validar dados.
-  def changeset(params) do
-    %__MODULE__{}
+  # Ele pode ser utilizado para criar uma 'struct' ou atualiza-la.
+  # Na lógica abaixo passamos como argumento uma 'struct' que pode já estar preenchida com dados.
+  # Com '\\ %__MODULE__{}' damos um comportamento 'default' que será chamado caso não exista uma 'struct'
+  # para que então ela seja criada.
+  def changeset(struct \\ %__MODULE__{}, params) do
+    struct
     |> cast(params, @required_params)
     |> validate_required(@required_params)
     |> check_constraint(:balance, name: :balance_must_be_positive_or_zero)
